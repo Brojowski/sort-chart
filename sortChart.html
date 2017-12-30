@@ -6,7 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 </head>
 <body>
-<canvas id="sortchart"/>
+<canvas id="sortchart" style="height: 100%; width: 100%;"/>
 <script>
     var myChart;
     function sortBy(objs, sortName) {
@@ -17,13 +17,15 @@
             hitmap[displayName] = hitmap[displayName] ? hitmap[displayName] + 1 : 1;
         });
 
-        var dataLabelPair = Object.keys(hitmap).map(function (dataItem) {
+        return Object.keys(hitmap).map(function (dataItem) {
             return {
                 label: dataItem,
                 data: hitmap[dataItem]
             }
         });
+    }
 
+    function seperateForGraphing(dataLabelPair) {
         return {
             labels: dataLabelPair.map(function (pair) { return pair.label}),
             data: dataLabelPair.map(function (pair) { return pair.data})
