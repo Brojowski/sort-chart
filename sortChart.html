@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sort Chart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+</head>
+<body>
+<canvas id="sortchart"/>
+<script>
+    var myChart;
+    function sortBy(objs, sortName) {
+        var hitmap = {};
+
+        objs.forEach(function (element) {
+            var displayName = element[sortName];
+            hitmap[displayName] = hitmap[displayName] ? hitmap[displayName] + 1 : 1;
+        });
+
+        var dataLabelPair = Object.keys(hitmap).map(function (dataItem) {
+            return {
+                label: dataItem,
+                data: hitmap[dataItem]
+            }
+        });
+
+        return {
+            labels: dataLabelPair.map(function (pair) { return pair.label}),
+            data: dataLabelPair.map(function (pair) { return pair.data})
+        }
+    }
+
+    function drawChart(displayPair) {
+        if (myChart) myChart.destroy();
+        var ctx = document.getElementById('sortchart');
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: displayPair.labels,
+                datasets: [{
+                    data: displayPair.data,
+                    borderWidth: 1,
+                    backgroundColor: '#4f8ff7',
+                    hoverBackgroundColor: '#7caeff'
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
